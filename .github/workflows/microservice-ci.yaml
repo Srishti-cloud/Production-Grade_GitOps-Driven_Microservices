@@ -46,12 +46,16 @@ jobs:
       - name: Build Image
         env:
           IMAGE_NAME: ghcr.io/${{ env.OWNER_LC }}/microservices-demo/${{ inputs.service }}:sha-${{ github.sha }}
-        run: |
+        if [ "${{ inputs.service }}" == "cartservice" ]; then
+            CONTEXT="./src/cartservice/src"
+          else
+            CONTEXT="./src/${{ inputs.service }}"
+          fi
           docker build \
             --cache-from=type=gha \
             --cache-to=type=gha,mode=max \
             -t $IMAGE_NAME \
-            ./src/${{ inputs.service }}
+            "$CONTEXT"
 
       # -------------------
       # Security Scan (before push)
