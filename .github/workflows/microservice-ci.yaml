@@ -46,7 +46,8 @@ jobs:
       - name: Build Image
         env:
           IMAGE_NAME: ghcr.io/${{ env.OWNER_LC }}/microservices-demo/${{ inputs.service }}:sha-${{ github.sha }}
-        if [ "${{ inputs.service }}" == "cartservice" ]; then
+        run: |
+          if [ "${{ inputs.service }}" == "cartservice" ]; then
             CONTEXT="./src/cartservice/src"
           else
             CONTEXT="./src/${{ inputs.service }}"
